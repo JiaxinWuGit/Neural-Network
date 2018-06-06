@@ -39,3 +39,4 @@ layer_dims = [3,2,1]
 parameters = initialize_parameters(layer_dims)
 print(parameters)
 print(len(layer_dims))
+
