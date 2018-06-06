@@ -27,7 +27,7 @@ def load_mnist():
 
 train_set, valid_set, test_set = load_mnist()
 
-
+#test
 print(train_set[0].shape)
 print(train_set[1].shape)
 print(valid_set[0].shape)
