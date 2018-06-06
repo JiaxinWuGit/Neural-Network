@@ -34,4 +34,3 @@ print(valid_set[0].shape)
 print(valid_set[1].shape)
 print(test_set[0].shape)
 print(test_set[1].shape)
-
