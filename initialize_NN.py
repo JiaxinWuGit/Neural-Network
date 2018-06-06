@@ -35,8 +35,8 @@ def initialize_parameters(layer_dims):
 	return parameters
 
 
-layer_dims = [3,2,1]
-parameters = initialize_parameters(layer_dims)
-print(parameters)
-print(len(layer_dims))
-
+#test
+layer_dims_test = [3,2,1]
+parameters_test = initialize_parameters(layer_dims_test)
+print(parameters_test)
+print(len(layer_dims_test))
