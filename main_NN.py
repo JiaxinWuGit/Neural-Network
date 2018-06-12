@@ -5,17 +5,17 @@ import random
 import matplotlib.pyplot as plt
 
 # Input parameters for the neural network.
-mini_batch_size = 100
-layer_dims = [784, 60, 30, 10]   # Dimension of every layer, including the input layer.
+mini_batch_size = 350
+layer_dims = [784, 70, 60, 10]   # Dimension of every layer, including the input layer.
 L = len(layer_dims)
-steps = 1000   # Number of times the NN update the parameters
+steps = 3600   # Number of times the NN update the parameters
 activation = np.repeat("tanh", L - 2)  # Activation functions' names.
 activation = np.append(activation, "sigmoid")
 cost_type = "cross_entropy" # Type of the cost function. It could be "cross_entropy" or "quadratic".
-learning_rate = 1.0
+learning_rate = 0.7
 
 regularization = "None" # Method for regularization which shrink Wk's. It can be "None" or "L1" or "L2".
-regular_parameter = 0.5 # Parameter for regularization.
+regular_parameter = 0.05 # Parameter for regularization.
 
 del_step = 100 # Every del_step number of steps, calculate and keep the cost.
 
@@ -48,7 +48,8 @@ train_set, valid_set, test_set = load_mnist()
 
 
 
-data_set = valid_set # The set of data which will be used in this code.
+data_set = train_set # The set of data which will be used in training the NN.
+data_set_test = test_set  # The set of date which will be used in calculating accuracy.
 
 
 
@@ -350,15 +351,14 @@ for i in range(0, steps):
 	parameters = back_propagation(A_set = A_set, Y = mini_Y, cost_type = cost_type, df = df, parameters = parameters, layer_dims = layer_dims, learning_rate = learning_rate, regularization = regularization, regular_parameter = regular_parameter)
 
 
-plt.plot(C_cost[0], C_cost[1])
-plt.show()
 
 
  
-A_final = data_set[0].T # Store the final run of A
+A_final = data_set_test[0].T # Store the final run of A
 
 for k in range(1, L):
 	A_final, df_final = activation_forward(A_prev = A_final, W = parameters["W" + str(k)] , b = parameters["b" + str(k)] , f = activation[k - 1] )
+
 
 
 
@@ -383,8 +383,40 @@ def accuracy(AL, Y):
 
 	return (correct_rate)
 
-data_size = data_set[1].shape[0]
-Y_final = np.reshape(data_set[1], (1, data_size))
+data_size = data_set_test[1].shape[0]
+Y_final = np.reshape(data_set_test[1], (1, data_size))
 correct_rate = accuracy(AL = A_final, Y = Y_final)
 
 print("accuracy = ", correct_rate * 100, "%")
+
+
+
+g, ax = plt.subplots(1)
+ax.plot(C_cost[0], C_cost[1])
+ax.set_ylim(ymin = 0)
+plt.ylabel('cost', fontsize = 18)
+plt.xlabel('number of updates', fontsize = 18)
+plt.show(g)
+
+
+
+
+def export_parameters(parameters, name_of_file):
+	"""
+	Export parameters["W1","b1", ..., "WL", "bL"] in the NN.
+	
+	Argument:
+		parameters -- dictionary of "W1", "b1", ..., "WL", "bL"
+				Wl -- weight matrix of shape (layer_dims[l], layer_dims[l-1])
+    			bl -- bias vector of shape (layer_dims[l], 1)
+    	name_of_file -- name of the file to be created and saved in.
+    		e.g. name_of_file = "save_parameters"
+	"""
+	f1 = open("name_of_file" + ".pkl", "w+")
+	f1.close()
+
+	with open(name_of_file + ".pkl", "wb") as f:
+		pickle.dump(parameters, f, pickle.HIGHEST_PROTOCOL)
+
+
+export_parameters(parameters = parameters, name_of_file = "parameters_nmist_2")
