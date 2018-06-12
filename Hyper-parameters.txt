@@ -1,0 +1,14 @@
+mini_batch_size = 350
+layer_dims = [784, 70, 60, 10]   # Dimension of every layer, including the input layer.
+L = len(layer_dims)
+steps = 3600   # Number of times the NN update the parameters
+activation = np.repeat("tanh", L - 2)  # Activation functions' names.
+activation = np.append(activation, "sigmoid")
+cost_type = "cross_entropy" # Type of the cost function. It could be "cross_entropy" or "quadratic".
+learning_rate = 0.7
+
+regularization = "None" # Method for regularization which shrink Wk's. It can be "None" or "L1" or "L2".
+regular_parameter = 0.05 # Parameter for regularization.
+
+del_step = 100 # Every del_step number of steps, calculate and keep the cost.
+
